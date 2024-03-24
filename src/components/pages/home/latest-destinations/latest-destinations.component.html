@@ -1,0 +1,54 @@
+<section class="py-10 container grid grid-cols-1 gap-10">
+  @if(categories.length!==0){ @for (cat of categories; track cat.id) {
+  <div>
+    <h3 class="text-main text-2xl mb-10">
+      قائمة بأفضل {{ cat.name }} المضافة حديثاً
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      @for (place of cat.places.slice(0,3); track $index) {
+      <a
+        routerLink="/destination/{{ place.id }}"
+        class="bg-slate-100 shadow rounded-lg p-5 hover:scale-105"
+      >
+        <div class="grid grid-cols-1 gap-5">
+          <div class="flex justify-end">
+            <div class="flex gap-1 text-main">
+              <p>10 / {{ place.final_rate }}</p>
+              <fa-icon [icon]="icons.rate"> </fa-icon>
+            </div>
+          </div>
+          <img
+            [src]="place.media[0].original_url"
+            alt="Destination"
+            style="width: 100%; height: 250px"
+            class="rounded-lg"
+          />
+          <div>
+            <h5 class="text-main text-xl">{{ place.name }}</h5>
+            <div class="flex gap-1">
+              <div class="text-main">
+                <fa-icon [icon]="icons.location"></fa-icon>
+              </div>
+              <p>{{ place.address }}</p>
+            </div>
+            <div style="height: 50px" class="overflow-clip">
+              <p class="text-slate-500">{{ place.description }}</p>
+            </div>
+            <div class="flex justify-between text-sm text-main">
+              <div class="flex gap-1">
+                <fa-icon [icon]="icons.comment"> </fa-icon>
+                <p>{{ place.comments.length }} تعليق</p>
+              </div>
+              <div class="flex gap-1">
+                <p>{{ place.view }} زيارة</p>
+                <fa-icon [icon]="icons.views"> </fa-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      }
+    </div>
+  </div>
+  } }
+</section>

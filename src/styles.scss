@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "ngx-owl-carousel-o/lib/styles/scss/owl.carousel";
+@import "ngx-owl-carousel-o/lib/styles/scss/owl.theme.default";
+
+* {
+  font-family: "Almarai", sans-serif;
+}
+
+input {
+  border: 2px solid #7eb38b !important;
+  padding-right: 10px !important;
+  border-radius: 5px;
+  height: 40px;
+}
+input:focus {
+  outline: none !important;
+}
+select {
+  border: 2px solid #7eb38b !important;
+  padding-right: 10px !important;
+  border-radius: 5px;
+  height: 40px;
+}
+select:focus {
+  outline: none !important;
+}
+button {
+  border-radius: 5px;
+}

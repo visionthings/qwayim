@@ -1,0 +1,22 @@
+<div class="relative bg-slate-100">
+  <div class="grid grid-cols-1 gap-10 pb-10 relative z-20">
+    <app-city-header
+      [headerImage]="cityImages[0]?.original_url"
+    ></app-city-header>
+    <div class="pt-10">
+      <app-categories
+        [citySlug]="citySlug"
+        [cityName]="cityName"
+      ></app-categories>
+    </div>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <img
+    [src]="cityImages[0]?.original_url"
+    alt="background"
+    class="absolute z-0 opacity-10 top-0 left-0 w-full h-full"
+    priority
+  />
+</div>

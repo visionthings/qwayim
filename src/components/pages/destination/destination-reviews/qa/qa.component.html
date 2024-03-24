@@ -1,0 +1,128 @@
+<section class="container">
+  @for (question of handledQuestions.slice(0, shownQuestionsNumber); track
+  question.id) {
+  <!-- Question -->
+  <div class="flex gap-3 py-5 border-b-2 border-b-black">
+    <div style="min-width: 50px">
+      <img
+        [src]="question.profile_pic"
+        alt="Profile Picture"
+        style="width: 50px; height: 50px; border-radius: 100%"
+      />
+    </div>
+    <div class="w-full">
+      <div class="flex items-center gap-4 text-slate-500 text-xs">
+        <h4 class="text-lg text-black">{{ question.username }}</h4>
+        <p>{{ question.date }} - {{ question.time }}</p>
+      </div>
+      <p>{{ question.question }}</p>
+
+      <!-- Answers -->
+      <div class="grid grid-cols-1 gap-4 mt-5">
+        @for (answer of question.answers.slice(0, shownAnswersNumber); track
+        answer.id) {
+        <div class="bg-slate-200 flex gap-4 w-full p-3 rounded-lg">
+          <div style="min-width: 30px">
+            <img
+              [src]="answer.profile_pic"
+              alt="Profile Picture"
+              style="width: 30px; height: 30px; border-radius: 100%"
+            />
+          </div>
+          <div>
+            <div class="flex items-center gap-4">
+              <h4 class="text-black">{{ answer.username }}</h4>
+              <p class="text-slate-500 text-xs">
+                {{ answer.date }} - {{ answer.time }}
+              </p>
+            </div>
+            <p class="text-sm">{{ answer.answer }}</p>
+          </div>
+        </div>
+        }
+      </div>
+      <!-- End of Answers -->
+      <!-- Show more answers -->
+      @if (question.answers.length> shownAnswersNumber) {
+      <div class="text-center text-main pt-5">
+        <p class="cursor-pointer" (click)="showMoreAnswers()">
+          إظهار المزيد من الإجابات
+        </p>
+      </div>
+      }
+
+      <!-- Answer Form -->
+      <div class="bg-slate-200 w-full p-3 rounded-lg mt-5">
+        <form
+          [formGroup]="answerForm"
+          (ngSubmit)="addAnswer(question.id)"
+          class="grid grid-cols-1 gap-3"
+        >
+          <textarea
+            id="answer"
+            name="answer"
+            formControlName="answer"
+            placeholder="أضف إجابتك هنا..."
+          ></textarea>
+          <button
+            type="submit"
+            class="bg-main rounded-lg text-white py-2"
+            [disabled]="answerForm.invalid"
+          >
+            إضافة الإجابة
+          </button>
+        </form>
+        @if (successMessage) {
+        <p class="text-main text-center mt-4">{{ successMessage }}</p>
+        } @if (errorMessage) {
+        <p class="text-rose-700 text-center mt-4">{{ errorMessage }}</p>
+        }
+      </div>
+    </div>
+  </div>
+
+  } @if (handledQuestions.length> shownQuestionsNumber) {
+  <div class="text-center text-main pt-5">
+    <p class="cursor-pointer" (click)="showMoreQuestions()">
+      إظهار المزيد من الأسئلة
+    </p>
+  </div>
+  }
+
+  <!-- Add Question -->
+  @if (isAuthenticated) {
+  <div class="mt-5 ring-1 ring-slate-200 shadow rounded-lg container py-5">
+    <div class="flex justify-between">
+      <p class="text-main text-xl mb-5">أضف سؤالك</p>
+      <div class="text-center flex justify-center text-main"></div>
+    </div>
+    <form
+      [formGroup]="questionForm"
+      (ngSubmit)="submitQuestion()"
+      class="grid grid-cols-1 gap-5"
+    >
+      <textarea
+        name="question"
+        formControlName="question"
+        placeholder="اكتب سؤالك هنا..."
+      ></textarea>
+      @if (question.invalid && (question.touched || question.dirty)) {
+      <p class="text-rose-700">هذا الحقل إلزامي.</p>
+      }
+
+      <button
+        type="submit"
+        class="bg-main text-white rounded-md px-5 py-2"
+        [disabled]="!questionForm.valid"
+      >
+        إضافة السؤال
+      </button>
+    </form>
+    @if (questionSuccessMessage) {
+    <p class="text-main text-center">{{ questionSuccessMessage }}</p>
+    } @if (questionErrorMessage) {
+    <p class="text-rose-700 text-center">{{ questionErrorMessage }}</p>
+    }
+  </div>
+  }
+</section>

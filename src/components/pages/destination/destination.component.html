@@ -1,0 +1,23 @@
+<div class="relative bg-slate-100">
+  <div class="grid grid-cols-1 gap-10 container py-10 relative z-10">
+    <app-destination-overview
+      [destination]="destination"
+    ></app-destination-overview>
+    <app-destination-features
+      [destination]="destination"
+    ></app-destination-features>
+    <app-how-to-reach-city
+      [howToReachCity]="howToReachCity"
+    ></app-how-to-reach-city>
+    <app-destination-reviews
+      [comments]="destination.comments"
+      [questions]="destination.questions"
+      [destinationID]="destination.id"
+    ></app-destination-reviews>
+  </div>
+  <img
+    [src]="destination?.media[0]?.original_url"
+    alt="background"
+    class="absolute z-0 opacity-5 top-0 left-0 w-full h-full"
+  />
+</div>

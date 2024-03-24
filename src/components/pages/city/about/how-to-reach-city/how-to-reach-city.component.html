@@ -1,0 +1,20 @@
+<section class="flex flex-col gap-5">
+  <h3 class="text-2xl">طريقة الوصول</h3>
+
+  @for (item of howToReachCity; track item.id) {
+  <div
+    class="ring-1 ring-slate-100 rounded-lg shadow-lg p-5 flex gap-5 bg-white"
+  >
+    <div
+      class="flex flex-col justify-center items-center gap-5"
+      style="min-width: 100px; max-width: 100px"
+    >
+      <fa-icon [icon]="item.icon" class="text-main text-5xl"></fa-icon>
+      <p class="text-center">{{ item.title }}</p>
+    </div>
+    <div>
+      <p class="text-slate-500">{{ item.description }}</p>
+    </div>
+  </div>
+  }
+</section>

@@ -1,0 +1,168 @@
+<section class="grid grid-cols-1 md:grid-cols-3 gap-10 container">
+  <!-- Filters -->
+  <div
+    class="hidden md:block bg-white rounded-lg ring-1 ring-slate-100 shadow-lg container py-5"
+  >
+    @for (filter of filters; track filter.id) {
+    <div class="mb-5">
+      <p class="text-lg text-main">{{ filter.title }}</p>
+      @for (item of filter.items; track item.id) {
+      <div class="flex items-center gap-3">
+        <input
+          type="checkbox"
+          [id]="item.value"
+          [name]="item.value"
+          (change)="filterDestinations($event)"
+          class="cursor-pointer"
+        />
+        <label [for]="item.value" class="text-sm flex gap-2 cursor-pointer">
+          <fa-icon [icon]="item.icon" class="text-main"></fa-icon>
+          {{ item.title }}
+        </label>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Destinations -->
+  <div class="md:col-span-2 grid grid-cols-1 gap-5">
+    @if(errorMessage) {
+    <div
+      class="bg-white rounded-lg ring-1 ring-slate-100 shadow-lg container py-5 flex justify-center items-center gap-5 h-fit"
+    >
+      <p class="text-center">{{ errorMessage }}</p>
+    </div>
+    }
+    <div class="flex flex-col gap-10">
+      <div
+        *ngIf="destinations && destinations.length == 0"
+        class="bg-white rounded-lg ring-1 ring-slate-100 shadow-lg container py-5 flex flex-col justify-center items-center gap-5 h-fit w-full hover:scale-105"
+      >
+        <img
+          src="assets/images/emptylist.png"
+          alt="Not found"
+          width="150"
+          height="350"
+        />
+        <p class="text-center">عفواً لا توجد نتائج.</p>
+      </div>
+      @for (dest of destinations; track dest.id) {
+      <div
+        class="bg-white rounded-lg ring-1 ring-slate-100 shadow-lg container py-5 h-fit hover:scale-105"
+      >
+        <div class="flex gap-1 text-main mb-2">
+          <fa-icon [icon]="icons.star"></fa-icon>
+          <p>10 / {{ dest.final_rate }}</p>
+        </div>
+        <div class="flex gap-5">
+          <div class="relative">
+            <img
+              [src]="dest.media[0].original_url"
+              alt="dest.media[0].name"
+              style="min-width: 150px; max-width: 150px; height: 150px"
+              class="rounded-lg"
+            />
+            <!-- Favorite icon -->
+            @if (favoritesIDsComplete) { @if (favoritesIDs.includes(dest.id)) {
+            <div
+              (click)="removeFromFavorites(dest.id)"
+              class="cursor-pointer absolute top-2 right-2 rounded-full bg-white text-main w-7 h-7 flex justify-center items-center"
+            >
+              <fa-icon [icon]="icons.heart"></fa-icon>
+            </div>
+            } @else {
+            <div
+              (click)="addToFavorites(dest.id)"
+              class="cursor-pointer absolute top-2 right-2 rounded-full bg-white text-main w-7 h-7 flex justify-center items-center"
+            >
+              <fa-icon [icon]="icons.regularHeart"></fa-icon>
+            </div>
+            } }
+          </div>
+          <div style="height: 140px" class="overflow-hidden">
+            <a [routerLink]="['/destination/' + dest.id]">
+              <p class="text-xl mb-3 text-main">{{ dest.name }}</p>
+            </a>
+            <p class="flex gap-2">
+              <fa-icon [icon]="locationIcon" class="text-main"></fa-icon>
+              {{ dest.address }}
+            </p>
+            <p class="text-slate-500">{{ dest.description }}</p>
+            <div class="flex gap-3 text-sm">
+              <!-- Comments -->
+              <div class="flex gap-1">
+                <fa-icon [icon]="icons.comment" class="text-main"></fa-icon>
+                <p>{{ dest.comments.length }} تعليق</p>
+              </div>
+
+              <!-- Views -->
+              <div class="flex gap-1">
+                <fa-icon [icon]="icons.views" class="text-main"></fa-icon>
+                <p>{{ dest.view }} زيارة</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- Pagination -->
+      <div
+        *ngIf="paginationInfo && paginationInfo.last_page !== 1"
+        class="flex justify-between text-main"
+      >
+        <p *ngIf="paginationInfo.current_page === 1" class="text-slate-400">
+          الصفحة الأولى
+        </p>
+        <p
+          *ngIf="paginationInfo.current_page !== 1"
+          class="cursor-pointer"
+          (click)="showPage(1)"
+        >
+          الصفحة الأولى
+        </p>
+        <div *ngIf="paginationInfo.current_page === 1" class="text-slate-400">
+          <fa-icon [icon]="icons.prev"> </fa-icon>
+        </div>
+        <div
+          *ngIf="paginationInfo.current_page !== 1"
+          class="cursor-pointer"
+          (click)="showPage(paginationInfo.current_page - 1)"
+        >
+          <fa-icon [icon]="icons.prev"> </fa-icon>
+        </div>
+        <div
+          class="cursor-pointer"
+          (click)="showPage(paginationInfo.current_page + 1)"
+          *ngIf="paginationInfo.current_page !== paginationInfo.last_page"
+        >
+          <fa-icon [icon]="icons.next"> </fa-icon>
+        </div>
+        <div
+          *ngIf="paginationInfo.current_page === paginationInfo.last_page"
+          class="text-slate-400"
+        >
+          <fa-icon [icon]="icons.next"> </fa-icon>
+        </div>
+        <p
+          *ngIf="paginationInfo.current_page !== paginationInfo.last_page"
+          class="cursor-pointer"
+          (click)="showPage(paginationInfo.last_page)"
+        >
+          الصفحة الأخيرة
+        </p>
+        <p
+          *ngIf="paginationInfo.current_page === paginationInfo.last_page"
+          class="text-slate-400"
+        >
+          الصفحة الأخيرة
+        </p>
+        <p>
+          عرض النتائج من {{ paginationInfo.from }} إلى
+          {{ paginationInfo.to }} من إجمالي {{ paginationInfo.total }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

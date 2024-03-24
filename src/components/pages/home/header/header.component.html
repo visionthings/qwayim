@@ -1,0 +1,87 @@
+<header *ngIf="isLoading" class="w-full h-screen bg-main"></header>
+<header *ngIf="!isLoading" class="w-full h-screen bg-black">
+  <swiper-container
+    style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+    pagination-clickable="true"
+    autoplay="true"
+  >
+    @for (city of cities; track $index) {
+    <swiper-slide>
+      <div class="w-full h-screen relative">
+        <img
+          [src]="city.background"
+          alt="city"
+          class="w-full h-screen opacity-50"
+        />
+        <div
+          class="absolute top-0 left-0 w-full h-screen flex flex-col justify-center items-center"
+        >
+          <div class="container text-white">
+            <h3 class="text-4xl">
+              {{ city.name }}
+            </h3>
+            <p class="text-2xl md:text-3xl text-white mb-3 md:mb-0">
+              استمتع بالراحة والاسترخاء <br />في منتجعاتنا الفاخرة والفنادق
+              الراقية
+            </p>
+          </div>
+          <!-- Weather -->
+          <div class="flex justify-center">
+            <div
+              class="md:mt-10 rounded overflow-hidden bg-white opacity-75 flex"
+            >
+              <div class="flex bg-slate-200 md:p-10">
+                <div>
+                  <img
+                    [src]="city.condition_icon"
+                    alt="Weather icon"
+                    width="100"
+                    height="100"
+                    style="width: 100px; height: 100px"
+                  />
+                </div>
+                <div class="text-3xl h-full flex flex-col justify-center">
+                  <p>{{ city.condition_text }}</p>
+                  <p>℃ {{ city.temp }}</p>
+                </div>
+              </div>
+              <div class="bg-white flex flex-col justify-center p-10">
+                <p>
+                  <fa-icon
+                    [icon]="calendarIcon"
+                    class="text-main pl-3"
+                  ></fa-icon>
+                  {{ city.date }}
+                </p>
+                <p>
+                  <fa-icon [icon]="clockIcon" class="text-main pl-3"></fa-icon
+                  >{{ city.time }} {{ city.is_day === 1 ? "ص" : "م" }}
+                </p>
+                <p>
+                  <fa-icon [icon]="windIcon" class="text-main pl-3"></fa-icon
+                  >{{ city.wind_kph }} كم / الساعة
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </swiper-slide>
+    }
+  </swiper-container>
+
+  <!-- Social Media -->
+  <div
+    class="absolute top-0 left-0 h-full hidden md:flex flex-col justify-center z-10"
+  >
+    <div
+      class="flex flex-col gap-10 bg-white opacity-75 py-10 px-2 rounded-r-lg"
+    >
+      @for (icon of socialMediaIcons; track icon.id) {
+      <a [href]="icon.path">
+        <fa-icon [icon]="icon.icon" class="text-main text-2xl"></fa-icon
+      ></a>
+      }
+    </div>
+  </div>
+</header>

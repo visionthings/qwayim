@@ -1,0 +1,90 @@
+<div class="container mb-10 text-lg">
+  <div class="border-b-2 border-b-slate-900 flex gap-2">
+    <a
+      routerLink="/city/{{ citySlug.toLowerCase() }}/about/{{
+        citySlug.toLowerCase()
+      }}"
+      >مدينة {{ cityName }}</a
+    >
+    <p class="text-main">></p>
+    <p>{{ currentCategory }}</p>
+  </div>
+</div>
+@if (start) {
+<section class="bg-secondary py-3">
+  <!-- Large Screen -->
+  <div class="hidden lg:block container">
+    <swiper-container
+      slides-per-view="7"
+      keyboard="true"
+      mousewheel="true"
+      navigation="true"
+    >
+      <swiper-slide>
+        <a [routerLink]="aboutPath" routerLinkActive="active" class="py-1">
+          <div (click)="resetCurrentCat()">عن المدينة</div>
+        </a>
+      </swiper-slide>
+      @for (category of categories; track category.id) {
+      <swiper-slide>
+        <a
+          [routerLink]="[baseUrl + category.slug]"
+          routerLinkActive="active"
+          class="py-1"
+        >
+          <div (click)="setCurrentCat(category.name)">
+            {{ category.name }}
+          </div></a
+        >
+      </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+
+  <!-- Medium Screen -->
+  <div class="hidden md:block lg:hidden container">
+    <swiper-container
+      slides-per-view="3"
+      keyboard="true"
+      mousewheel="true"
+      navigation="true"
+    >
+      <swiper-slide>
+        <button class="bg-main text-white px-5 py-2 rounded-2xl">
+          عن المدينة
+        </button>
+      </swiper-slide>
+      @for (category of categories; track category.id) {
+      <swiper-slide>
+        <button class="bg-main text-white px-5 py-2 rounded-2xl">
+          {{ category.name }}
+        </button></swiper-slide
+      >
+      }
+    </swiper-container>
+  </div>
+
+  <!-- Small Screen -->
+  <div class="block md:hidden container">
+    <swiper-container
+      slides-per-view="1"
+      keyboard="true"
+      mousewheel="true"
+      navigation="true"
+    >
+      <swiper-slide>
+        <button class="bg-main text-white px-5 py-2 rounded-2xl">
+          عن المدينة
+        </button>
+      </swiper-slide>
+      @for (category of categories; track category.id) {
+      <swiper-slide>
+        <button class="bg-main text-white px-5 py-2 rounded-2xl">
+          {{ category.name }}
+        </button></swiper-slide
+      >
+      }
+    </swiper-container>
+  </div>
+</section>
+}

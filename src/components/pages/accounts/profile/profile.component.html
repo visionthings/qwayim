@@ -1,0 +1,178 @@
+<app-navbar></app-navbar>
+<section class="py-10 container">
+  <div class="bg-slate-200 container rounded-lg shadow py-10">
+    <div
+      *ngIf="user"
+      class="flex flex-col justify-center items-center gap-3 mb-10"
+    >
+      <img
+        [src]="user?.media[0]?.original_url"
+        alt="User image"
+        style="border-radius: 100%; width: 150px; height: 150px"
+        class="bg-white"
+      />
+      <form [formGroup]="avatarForm" (ngSubmit)="updateAvatar($event)">
+        <label
+          for="avatar"
+          class="text-sm underline text-slate-500 cursor-pointer"
+        >
+          تغيير الصورة
+        </label>
+        <input
+          id="avatar"
+          type="file"
+          name="avatar"
+          formControlName="avatar"
+          class="hidden"
+          (change)="updateAvatar($event)"
+        />
+      </form>
+
+      <h4 class="text-xl text-center">{{ user.name }}</h4>
+    </div>
+    <form
+      [formGroup]="profileForm"
+      (ngSubmit)="updateProfile()"
+      class="grid grid-cols-1 md:grid-cols-2 gap-5"
+    >
+      <div>
+        <label for="name">اسم المستخدم</label>
+        <input type="text" id="name" name="name" formControlName="name" />
+        <div
+          *ngIf="name.invalid && (name.touched || name.dirty)"
+          class="bg-rose-700 text-white text-center w-full rounded py-2 mt-3"
+        >
+          <p *ngIf="name.hasError('required')">ادخل اسم المستخدم.</p>
+        </div>
+      </div>
+      <div>
+        <label for="email">البريد الإلكتروني</label>
+        <input type="text" name="email" formControlName="email" />
+        <div
+          *ngIf="email.invalid && (email.touched || email.dirty)"
+          class="bg-rose-700 text-white text-center w-full rounded py-2 mt-3"
+        >
+          <p *ngIf="email.hasError('required')">ادخل البريد الإلكتروني.</p>
+          <p *ngIf="email.hasError('email')">ادخل بريد إلكتروني صالح.</p>
+        </div>
+      </div>
+      <div>
+        <label for="date_of_birth">تاريخ الميلاد</label>
+        <input
+          type="date"
+          name="date_of_birth"
+          formControlName="date_of_birth"
+        />
+      </div>
+      <div>
+        <label for="gender">النوع</label>
+        <select name="gender" formControlName="gender">
+          <option value="male">ذكر</option>
+          <option value="female">أنثى</option>
+        </select>
+        <div
+          *ngIf="gender.invalid && (gender.touched || gender.dirty)"
+          class="bg-rose-700 text-white text-center w-full rounded py-2 mt-3"
+        >
+          <p *ngIf="gender.hasError('required')">ادخل النوع.</p>
+        </div>
+      </div>
+      <div class="md:col-span-2 flex justify-center">
+        <button
+          type="submit"
+          [disabled]="!profileForm.valid"
+          class="bg-main text-white rounded-lg px-10 py-3 mt-5"
+        >
+          تعديل البيانات الشخصية
+        </button>
+      </div>
+    </form>
+
+    <div
+      *ngIf="successMessage"
+      class="bg-main mt-10 py-2 px-10 rounded text-center text-white w-full"
+    >
+      <p>{{ successMessage }}</p>
+    </div>
+  </div>
+
+  <!-- Password -->
+  <div class="bg-slate-200 container rounded-lg shadow py-10 mt-10">
+    <h3 class="text-2xl mb-10">تحديث كلمة المرور</h3>
+    <form
+      [formGroup]="passwordForm"
+      (ngSubmit)="updatePassword()"
+      class="flex flex-col gap-5"
+    >
+      <!-- Old Password -->
+      <div class="flex gap-5">
+        <div
+          class="w-max text-nowrap hidden lg:flex justify-center items-center"
+        >
+          ادخل كلمة المرور القديمة:
+        </div>
+        <input
+          type="password"
+          id="old_password"
+          name="old_password"
+          formControlName="old_password"
+          placeholder="كلمة المرور القديمة"
+        />
+      </div>
+
+      <div
+        *ngIf="
+          old_password.invalid && (old_password.touched || old_password.dirty)
+        "
+        class="bg-rose-700 text-white w-full rounded py-2 text-center"
+      >
+        <p>هذا الحقل مطلوب.</p>
+      </div>
+
+      <!-- New Password -->
+      <div class="flex gap-5">
+        <div
+          class="w-max text-nowrap hidden lg:flex justify-center items-center"
+        >
+          ادخل كلمة المرور الجديدة:
+        </div>
+        <input
+          type="password"
+          id="new_password"
+          name="new_password"
+          formControlName="new_password"
+          placeholder="كلمة المرور الجديدة"
+        />
+      </div>
+      <div
+        *ngIf="
+          new_password.invalid && (new_password.touched || new_password.dirty)
+        "
+        class="bg-rose-700 text-white w-full rounded py-2 text-center"
+      >
+        <p *ngIf="new_password.hasError('required')">هذا الحقل مطلوب.</p>
+        <p *ngIf="new_password.hasError('minlength')">أدخل كلمة مرور قوية.</p>
+      </div>
+      <button
+        [disabled]="!passwordForm.valid"
+        type="submit"
+        class="bg-main px-5 py-2 rounded text-white text-nowrap"
+      >
+        تحديث كلمة المرور
+      </button>
+    </form>
+    <div
+      *ngIf="passwordErrorMessage"
+      class="bg-rose-700 text-white text-center w-full py-2 rounded-lg mt-5"
+    >
+      <p>{{ passwordErrorMessage }}</p>
+    </div>
+    <div
+      *ngIf="passwordSuccessMessage"
+      class="bg-main text-white text-center w-full py-2 rounded-lg mt-5"
+    >
+      <p>{{ passwordSuccessMessage }}</p>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

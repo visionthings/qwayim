@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+
+<section class="container py-10 grid grid-cols-1 gap-10">
+  @for (notification of notifications.slice(0,shownNotificationsNumber); track
+  notification.id) {
+  <div
+    class="flex gap-5 container py-5 bg-slate-200 rounded cursor-pointer"
+    [class.bg-green-100]="!notification.notification.read_at"
+    (click)="
+      readNotification(
+        notification.notification.id,
+        notification.notification.data.destination_id
+      )
+    "
+  >
+    <img
+      [src]="notification.profile_pic"
+      alt="Profile Picture"
+      style="width: 50px; height: 50px"
+    />
+    <p>{{ notification.notification.data.message }}</p>
+  </div>
+  }
+  <div
+    class="flex justify-center"
+    *ngIf="notifications.length > shownNotificationsNumber"
+  >
+    <p class="cursor-pointer text-main" (click)="showMoreNotifications()">
+      إظهار المزيد من الإشعارات
+    </p>
+  </div>
+</section>
+
+<app-footer></app-footer>

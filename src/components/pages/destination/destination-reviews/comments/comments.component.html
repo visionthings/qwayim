@@ -1,0 +1,85 @@
+<section class="bg-white rounded-b-lg">
+  @for (comment of handledComments.slice(0,shownCommentsNumber); track
+  comment.id) {
+  <div class="flex gap-5 mb-5 rounded-b-lg bg-white shadow container py-5">
+    <div style="min-width: 50px">
+      <img
+        [src]="comment.profile_pic"
+        alt="Profile picture"
+        style="width: 50px; height: 50px; border-radius: 100%"
+        class="bg-slate-200"
+      />
+    </div>
+    <div>
+      <div class="flex gap-3 items-center">
+        <p>{{ comment.username }}</p>
+        <p class="text-xs text-slate-500">
+          {{ comment.date }} - {{ comment.time }}
+        </p>
+      </div>
+      <div class="flex">
+        <div
+          *ngFor="let num of [].constructor(+comment.rate); let i = index"
+          class="flex text-main"
+        >
+          <fa-icon [icon]="icons.star"></fa-icon>
+        </div>
+      </div>
+      <p>{{ comment.comment }}</p>
+    </div>
+  </div>
+  } @if (shownCommentsNumber < handledComments.length) {
+  <div class="flex justify-center text-main">
+    <div class="cursor-pointer" (click)="showMoreComments()">
+      <p>اظهار المزيد من التعليقات</p>
+    </div>
+  </div>
+  }
+
+  <!-- Add Comment -->
+  @if (isAuthenticated) {
+  <div class="mt-5 ring-1 ring-slate-200 shadow rounded-lg container py-5">
+    <div class="flex justify-between">
+      <p class="text-main text-xl mb-5">أضف تعليقك</p>
+      <div class="text-center flex justify-center text-main">
+        @for (star of stars; track $index) { @if (star > rate) {
+        <div (click)="updateRate(star)">
+          <fa-icon [icon]="icons.regularStar"></fa-icon>
+        </div>
+        } @else {
+        <div (click)="updateRate(star)">
+          <fa-icon [icon]="icons.star"></fa-icon>
+        </div>
+        } }
+      </div>
+    </div>
+    <form
+      [formGroup]="commentForm"
+      (ngSubmit)="submitComment()"
+      class="grid grid-cols-1 gap-5"
+    >
+      <textarea
+        name="content"
+        formControlName="content"
+        placeholder="اكتب تعليقك هنا..."
+      ></textarea>
+      @if (content.invalid && (content.touched || content.dirty)) {
+      <p class="text-rose-700">هذا الحقل إلزامي.</p>
+      }
+
+      <button
+        type="submit"
+        class="bg-main text-white rounded-md px-5 py-2"
+        [disabled]="!commentForm.valid"
+      >
+        إضافة التعليق
+      </button>
+    </form>
+    @if (successMessage) {
+    <p class="text-main text-center">{{ successMessage }}</p>
+    } @if (errorMessage) {
+    <p class="text-rose-700 text-center">{{ errorMessage }}</p>
+    }
+  </div>
+  }
+</section>

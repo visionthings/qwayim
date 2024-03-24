@@ -1,0 +1,12 @@
+<div class="grid grid-cols-1 gap-10 container">
+  <app-city-gallery></app-city-gallery>
+  <app-city-about
+    [aboutCity]="aboutCity"
+    [citySlug]="citySlug"
+    [cityName]="cityName"
+  ></app-city-about>
+  <app-city-news [cityNews]="cityNews" [cityName]="cityName"></app-city-news>
+  <app-how-to-reach-city
+    [howToReachCity]="howToReachCity"
+  ></app-how-to-reach-city>
+</div>

@@ -1,0 +1,18 @@
+<section
+  class="ring-1 ring-slate-100 shadow-lg rounded-lg container py-10 bg-white"
+>
+  <h3 class="text-2xl mb-10">المميزات</h3>
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+    @for (filter of filters; track $index) { @for (item of
+    destination?.feature.features; track $index) { @if (filter.value === item) {
+    <div class="flex flex-col justify-center items-center">
+      <fa-icon
+        [icon]="filter.icon"
+        class="text-4xl text-center text-main"
+      ></fa-icon>
+      <p class="text-center mt-2">{{ filter.title }}</p>
+    </div>
+
+    } } }
+  </div>
+</section>

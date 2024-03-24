@@ -1,0 +1,32 @@
+<header class="container">
+  <div class="w-full h-96 relative">
+    @if (headerImage) {
+    <img
+      [src]="headerImage"
+      alt="header"
+      class="rounded-b-2xl opacity-70 w-full h-full"
+    />
+    }
+
+    <div
+      class="absolute -bottom-10 right-0 w-full z-10 flex justify-center md:px-20"
+    >
+      <div class="bg-white rounded p-5 shadow-lg w-full">
+        <form
+          [formGroup]="searchForm"
+          (ngSubmit)="submitSearch()"
+          class="flex gap-5"
+        >
+          <input
+            type="text"
+            placeholder="ابحث عن وجهة معينة..."
+            class="w-full"
+            name="search"
+            formControlName="search"
+          />
+          <button type="submit" class="bg-main text-white px-5">بحث</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,190 @@
+<nav class="bg-main text-lg font-normal lg:relative z-50 fixed w-full">
+  <div class="container h-full flex justify-between items-center">
+    <!-- Logo -->
+    <div>
+      <img
+        ngSrc="assets/images/logo.png"
+        alt="Logo"
+        width="60"
+        height="60"
+        priority
+      />
+    </div>
+
+    <!-- Navbar Items -->
+    <div class="hidden lg:flex gap-5">
+      @for (item of navItems; track item.id) { @if (item.id === 2) {
+      <div
+        class="relative"
+        (mouseenter)="toggleCitiesMenu()"
+        (mouseleave)="toggleCitiesMenu()"
+      >
+        <div class="cursor-pointer flex">
+          <p>{{ item.title }}</p>
+          <span class="material-symbols-outlined pt-1"> expand_more </span>
+        </div>
+        <div
+          class="absolute top-full w-max pt-5 z-10 h-0 overflow-hidden"
+          [class.open-cities-menu]="isCitiesMenuActive"
+        >
+          <div class="bg-main rounded p-2 flex flex-col gap-2 relative z-20">
+            @for (city of cities; track city.id) {
+            <a
+              routerLink="/city/{{ city.slug.toLowerCase() }}/about/{{
+                city.slug.toLowerCase()
+              }}"
+              >مدينة {{ city.name }}
+            </a>
+            }
+          </div>
+        </div>
+      </div>
+      } @else {
+      <a [routerLink]="item.path" routerLinkActive="active"
+        >{{ item.title }}
+      </a>
+      } }
+    </div>
+
+    <!-- Login Buttons -->
+    <div *ngIf="!isAuthenticated" class="hidden lg:flex gap-5">
+      @for (button of buttons; track button.id) {
+      <a [routerLink]="button.path">
+        <button class="bg-white rounded-lg text-main px-5 py-1">
+          {{ button.title }}
+        </button></a
+      >
+      }
+    </div>
+
+    <!-- User items if registered only -->
+
+    <div *ngIf="isAuthenticated" class="flex gap-8">
+      <div
+        (mouseenter)="toggleNotificationMenu()"
+        (mouseleave)="toggleNotificationMenu()"
+        class="text-main bg-white rounded-full w-7 h-7 flex justify-center items-center cursor-pointer relative"
+      >
+        <!-- Notification count -->
+        <div
+          *ngIf="unreadNotifications"
+          class="absolute bottom-3 left-5 bg-rose-700 text-white text-sm w-5 h-5 rounded-full flex justify-center items-center"
+        >
+          {{ unreadNotifications }}
+        </div>
+        <fa-icon [icon]="icons.notification"></fa-icon>
+        <div
+          class="absolute top-full left-0 pt-5 z-10 h-0 w-0 overflow-hidden"
+          [class.open-notification-menu]="isNotificationMenuActive"
+        >
+          <div
+            class="border-2 border-main bg-white text-black text-sm rounded p-2 flex flex-col gap-2 relative z-20"
+          >
+            @if (!notifications || notifications.length == 0) {
+            <p class="text-center p-2">لا يوجد إشعارات.</p>
+            } @if (notifications && notifications.length !== 0) { @for
+            (notification of notifications.slice(0, 5); track notification.id) {
+            <a
+              (click)="
+                readNotification(
+                  notification.notification.id,
+                  notification.notification.data.destination_id
+                )
+              "
+              class="p-2 flex justify-center items-center gap-3"
+              style="
+                max-height: 60px;
+                height: 60px;
+                overflow: hidden;
+                border-bottom: 1px solid silver;
+              "
+              [class.bg-slate-200]="!notification.notification.read_at"
+            >
+              <div>
+                <img
+                  [src]="notification.profile_pic"
+                  alt="Profile picture"
+                  style="width: 30px; height: 30px"
+                />
+              </div>
+              <div>{{ notification.notification.data.message }}</div>
+            </a>
+
+            } }
+            <div class="text-main p-2 flex justify-between cursor-default">
+              <p>إشعارات غير مقروءة ({{ unreadNotifications }})</p>
+              <a routerLink="/accounts/notifications">عرض الكل</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a
+        routerLink="/accounts/favorites"
+        class="text-main bg-white rounded-full w-7 h-7 flex justify-center items-center"
+      >
+        <fa-icon [icon]="icons.bookmark"></fa-icon>
+      </a>
+
+      <!-- User Menu -->
+      <div
+        class="cursor-pointer relative"
+        (mouseenter)="toggleUserMenu()"
+        (mouseleave)="toggleUserMenu()"
+      >
+        <img
+          *ngIf="userProfilePic"
+          [src]="userProfilePic"
+          alt="Profile Picture"
+          style="width: 30px; height: 30px; border-radius: 100%"
+          class="bg-white"
+        />
+        <div
+          class="absolute top-full left-0 pt-5 z-10 h-0 w-0 overflow-hidden"
+          [class.open-user-menu]="isUserMenuActive"
+        >
+          <div class="bg-main rounded p-2 flex flex-col gap-2 relative z-20">
+            <a routerLink="/accounts/profile">
+              <p><fa-icon [icon]="icons.user"></fa-icon> عرض الملف الشخصي</p>
+            </a>
+            <p (click)="logout()">
+              <fa-icon [icon]="icons.logout"></fa-icon> تسجيل الخروج
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Icon -->
+    <div
+      class="block lg:hidden cursor-pointer font-normal text-2xl hover:text-slate-100"
+      (click)="toggleSidebar()"
+    >
+      <span class="material-symbols-outlined"> menu </span>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside
+  class="bg-main mt-12 py-5 h-screen fixed z-50"
+  [class.open-sidebar]="isSidebarActive"
+>
+  <div class="flex flex-col justify-center items-center gap-5">
+    @for (item of navItems; track item.id) { @if (item.id === 2) { @for (city of
+    cities; track city.id) {
+    <a routerLink="/city/{{ city.slug.toLowerCase() }}"
+      >مدينة {{ city.name }}
+    </a>
+    } } @else { <a [routerLink]="item.path">{{ item.title }} </a>
+    } }
+    <div class="flex gap-5">
+      @for (button of buttons; track button.id) {
+      <a [routerLink]="button.path">
+        <button class="bg-white rounded-lg text-main px-5 py-1">
+          {{ button.title }}
+        </button></a
+      >
+      }
+    </div>
+  </div>
+</aside>

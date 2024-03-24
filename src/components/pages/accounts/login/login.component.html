@@ -1,0 +1,83 @@
+<section class="grid grid-cols-1 md:grid-cols-2">
+  <div class="py-10 container">
+    <div>
+      <div class="border-b-2 border-b-main pb-2">
+        <h3 class="text-2xl text-main">تسجيل الدخول</h3>
+      </div>
+
+      <div class="pt-10">
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="login()"
+          class="flex flex-col gap-10 mb-5"
+        >
+          <div>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              formControlName="email"
+              placeholder="البريد الإلكتروني"
+            />
+            <div class="text-rose-700">
+              @if (email.invalid && (email.dirty || email.touched)) { @if
+              (email.errors?.['required']) {
+              <p>هذا الحقل مطلوب.</p>
+              } @else if (email.errors?.['email']) {
+              <p>ادخل بريد الكتروني صالح.</p>
+              } }
+            </div>
+          </div>
+          <div>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              formControlName="password"
+              placeholder="كلمة المرور"
+            />
+            <div class="text-rose-700">
+              @if (password.invalid && (password.dirty || password.touched)) {
+              @if (password.errors?.['required']) {
+              <p>ادخل كلمة المرور</p>
+              } @else if (password.errors?.['minlength']) {
+              <p>ادخل كلمة مرور قوية</p>
+              } }
+            </div>
+          </div>
+
+          <button
+            [disabled]="!loginForm.valid"
+            class="bg-main text-white w-full py-2"
+          >
+            تسجيل الدخول
+          </button>
+        </form>
+        <p class="text-center mb-5">
+          ليس لديك حساب؟
+          <a routerLink="/accounts/register" class="text-main underline"
+            >انشئ حساب الآن</a
+          >
+        </p>
+
+        <div class="flex justify-center">
+          <a routerLink="/home">
+            <p class="text-center text-main underline">
+              الرجوع للصفحة الرئيسية
+            </p>
+          </a>
+        </div>
+
+        <div
+          *ngIf="errorMessage"
+          class="bg-rose-700 rounded-lg w-full py-2 text-white text-center mt-5"
+        >
+          <p>{{ errorMessage }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hidden md:block relative min-h-screen w-full">
+    <img ngSrc="assets/images/login.png" alt="Login" fill />
+  </div>
+</section>

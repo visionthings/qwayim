@@ -1,0 +1,63 @@
+<section class="py-10 bg-slate-100">
+  <!-- If Empty list -->
+  <div
+    *ngIf="destinations && destinations.length == 0"
+    class="bg-white rounded-lg ring-1 ring-slate-100 shadow-lg container py-5 flex flex-col justify-center items-center gap-5 h-fit w-full hover:scale-105"
+  >
+    <img
+      src="assets/images/emptylist.png"
+      alt="Not found"
+      width="150"
+      height="350"
+    />
+    <p class="text-center">عفواً لا توجد نتائج.</p>
+  </div>
+
+  <!-- Destinations -->
+  <div
+    *ngIf="destinations && destinations.length != 0"
+    class="grid grid-cols-1 gap-10 container"
+  >
+    <p class="text-lg">عدد نتائج البحث: {{ destinations.length }} نتيجة</p>
+    @for (dest of destinations; track dest.id) {
+    <div
+      class="container bg-white rounded-lg ring-1 ring-slate-100 shadow-lg py-5 flex gap-5 h-fit hover:scale-105"
+    >
+      <div class="relative">
+        <img
+          [src]="dest.media[0].original_url"
+          alt="dest.media[0].name"
+          style="min-width: 150px; max-width: 150px; height: 150px"
+          class="rounded-lg"
+        />
+        <!-- Favorite icon -->
+        @if (favoritesIDsComplete) { @if (favoritesIDs.includes(dest.id)) {
+        <div
+          (click)="removeFromFavorites(dest.id)"
+          class="cursor-pointer absolute top-2 right-2 rounded-full bg-white text-main w-7 h-7 flex justify-center items-center"
+        >
+          <fa-icon [icon]="icons.heart"></fa-icon>
+        </div>
+        } @else {
+        <div
+          (click)="addToFavorites(dest.id)"
+          class="cursor-pointer absolute top-2 right-2 rounded-full bg-white text-main w-7 h-7 flex justify-center items-center"
+        >
+          <fa-icon [icon]="icons.regularHeart"></fa-icon>
+        </div>
+        } }
+      </div>
+      <div style="height: 140px" class="overflow-hidden">
+        <a [routerLink]="['/destination/' + dest.id]">
+          <p class="text-xl mb-3 text-main">{{ dest.name }}</p>
+        </a>
+        <p class="flex gap-2 text-slate-500">
+          <fa-icon [icon]="icons.location" class="text-main"></fa-icon>
+          {{ dest.address }}
+        </p>
+        <p>{{ dest.description }}</p>
+      </div>
+    </div>
+    }
+  </div>
+</section>

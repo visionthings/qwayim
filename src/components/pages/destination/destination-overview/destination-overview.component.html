@@ -1,0 +1,116 @@
+<div class="mb-10 text-main text-lg underline">
+  <a
+    routerLink="/city/{{ destination?.city_slug.toLowerCase() }}/about/{{
+      destination?.city_slug.toLowerCase()
+    }}"
+    class="hover:text-rose-700"
+  >
+    مدينة {{ destination?.city_name }}
+  </a>
+  >
+  <a
+    routerLink="/city/{{ destination?.city_slug.toLowerCase() }}/category/{{
+      destination?.category.slug
+    }}"
+    class="hover:text-rose-700"
+  >
+    قائمة بأفضل {{ destination?.category.name }} بمدينة
+    {{ destination?.city_name }}
+  </a>
+  >
+  {{ destination?.name }}
+</div>
+<section
+  class="ring-1 ring-slate-100 shadow-lg rounded-lg container py-10 bg-white"
+>
+  <p class="text-2xl">{{ destination?.name }}</p>
+  <p class="text-slate-500 mb-5">{{ destination?.description }}</p>
+  <div class="flex justify-between mb-5">
+    <div class="flex flex-col gap-3">
+      @for (item of contactItems; track item.id) { @if(item.url) {
+      <a [href]="item?.url">
+        <div class="flex gap-2">
+          <div><fa-icon [icon]="item.icon" class="text-main"></fa-icon></div>
+          <div>
+            {{ item.content }}
+          </div>
+        </div>
+      </a>
+      } @else {
+      <div class="flex gap-2">
+        <div><fa-icon [icon]="item.icon" class="text-main"></fa-icon></div>
+        <div>
+          {{ item.content }}
+        </div>
+      </div>
+      } }
+    </div>
+    <div class="flex flex-col gap-3">
+      <!-- Favourites -->
+      <div class="flex gap-2 cursor-pointer">
+        <div>
+          <fa-icon [icon]="icons.heart" class="text-main"></fa-icon>
+        </div>
+        <div>إضافة للمفضلة</div>
+      </div>
+
+      <!-- Comments -->
+      <div class="flex gap-2 cursor-pointer">
+        <div>
+          <fa-icon [icon]="icons.comment" class="text-main"></fa-icon>
+        </div>
+        <div>التعليقات ({{ destination?.comments.length }})</div>
+      </div>
+
+      <!-- Social Media -->
+      <div class="flex gap-2">
+        @for (item of socialmedia; track item.id) {
+        <a [href]="item.url" target="_blank">
+          <fa-icon [icon]="item.icon" class="text-main text-2xl"></fa-icon>
+        </a>
+        }
+      </div>
+
+      <!-- Location on Google Map -->
+      <div>
+        <a [href]="destination?.google_map">
+          <button class="bg-main text-white rounded px-5 py-1">
+            عرض الموقع على الخريطة
+            <fa-icon [icon]="icons.map"></fa-icon></button
+        ></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Images -->
+  <swiper-container
+    style="
+      --swiper-navigation-color: #7eb38b;
+      --swiper-pagination-color: #7eb38b;
+    "
+    navigation="true"
+    pagination-clickable="true"
+    autoplay="true"
+    class="mySwiper"
+    thumbs-swiper=".mySwiper2"
+  >
+    @for (image of destination?.media; track $index) {
+    <swiper-slide>
+      <img [src]="image.original_url" alt="City image" />
+    </swiper-slide>
+    }
+  </swiper-container>
+  <swiper-container
+    class="mySwiper2"
+    space-between="10"
+    slides-per-view="4"
+    free-mode="true"
+    watch-slides-progress="true"
+  >
+    @for (image of destination?.media; track $index) {
+    <swiper-slide>
+      <img [src]="image.original_url" alt="City image" />
+    </swiper-slide>
+    }
+  </swiper-container>
+</section>

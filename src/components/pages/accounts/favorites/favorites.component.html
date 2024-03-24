@@ -1,0 +1,67 @@
+<app-navbar></app-navbar>
+<app-header></app-header>
+<section class="py-10 container">
+  <div class="flex justify-between mb-5">
+    <h4 class="text-2xl">قائمة المفضلة</h4>
+  </div>
+
+  <!-- Favorites -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <div class="flex flex-col gap-4 categories">
+      @for (cat of categories; track cat.id) {
+      <div
+        (click)="setActiveCategory(cat.id)"
+        [class.active]="cat.id === activeCategory"
+        class="text-center container py-2 ring-1 ring-main rounded-lg cursor-pointer"
+      >
+        {{ cat.name }}
+      </div>
+      }
+    </div>
+
+    <!-- Active favorites -->
+    <div class="col-span-2 flex flex-col gap-5">
+      @if (activeCategory !== null && activeFavorites.length === 0) {
+      <div class="flex flex-col justify-center items-center gap-10">
+        <img
+          src="assets/images/emptylist.png"
+          alt="Not found"
+          height="350px"
+          width="100px"
+        />
+        <p class="text-center">لا يوجد وجهات مفضلة خاصة بك في هذا القسم.</p>
+      </div>
+      } @for (fav of activeFavorites; track fav.id) {
+      <div
+        class="ring-1 ring-slate-200 rounded-lg shadow-md container py-5 hover:scale-105 grid grid-cols-1 md:grid-cols-3 gap-5"
+      >
+        <div class="relative">
+          <img
+            [src]="fav.place.media[0].original_url"
+            alt="destination"
+            style="height: 150px"
+            class="rounded-lg w-full"
+          />
+          <div
+            (click)="removeFromFavorites(fav.place.id)"
+            class="cursor-pointer absolute top-2 right-2 rounded-full bg-white w-7 h-7 flex justify-center items-center"
+          >
+            <fa-icon [icon]="icons.heart" class="text-main"></fa-icon>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <p class="text-xl text-main">{{ fav.place.name }}</p>
+          <div class="flex gap-2">
+            <fa-icon [icon]="icons.location" class="text-main"></fa-icon>
+            <p class="text-slate-500">{{ fav.place.address }}</p>
+          </div>
+          <div style="height: 100px" class="overflow-hidden">
+            <p>{{ fav.place.description }}</p>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>
