@@ -60,10 +60,11 @@
     <!-- User items if registered only -->
 
     <div *ngIf="isAuthenticated" class="flex gap-8">
+      <!-- Notifications in large screen -->
       <div
         (mouseenter)="toggleNotificationMenu()"
         (mouseleave)="toggleNotificationMenu()"
-        class="text-main bg-white rounded-full w-7 h-7 flex justify-center items-center cursor-pointer relative"
+        class="hidden md:flex justify-center items-center text-main bg-white rounded-full w-7 h-7 cursor-pointer relative"
       >
         <!-- Notification count -->
         <div
@@ -118,6 +119,23 @@
           </div>
         </div>
       </div>
+
+      <!-- Notifications in small screen -->
+      <a routerLink="/accounts/notifications" class="md:hidden">
+        <div
+          class="md:hidden flex justify-center items-center text-main bg-white rounded-full w-7 h-7 cursor-pointer relative"
+        >
+          <!-- Notification count -->
+          <div
+            *ngIf="unreadNotifications"
+            class="absolute bottom-3 left-5 bg-rose-700 text-white text-sm w-5 h-5 rounded-full flex justify-center items-center"
+          >
+            {{ unreadNotifications }}
+          </div>
+          <fa-icon [icon]="icons.notification"></fa-icon></div
+      ></a>
+
+      <!-- Favorites -->
       <a
         routerLink="/accounts/favorites"
         class="text-main bg-white rounded-full w-7 h-7 flex justify-center items-center"
@@ -177,7 +195,7 @@
     </a>
     } } @else { <a [routerLink]="item.path">{{ item.title }} </a>
     } }
-    <div class="flex gap-5">
+    <div *ngIf="!isAuthenticated" class="flex gap-5">
       @for (button of buttons; track button.id) {
       <a [routerLink]="button.path">
         <button class="bg-white rounded-lg text-main px-5 py-1">

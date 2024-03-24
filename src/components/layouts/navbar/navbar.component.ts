@@ -156,7 +156,6 @@ export class NavbarComponent implements OnInit {
       if (token) {
         this.userService.getNotifications(token).subscribe({
           next: (res: any) => {
-            console.log(res.data);
             this.notifications = res.data;
             for (const notification of res.data) {
               if (!notification.notification.read_at) {

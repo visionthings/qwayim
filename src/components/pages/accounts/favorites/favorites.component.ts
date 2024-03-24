@@ -62,7 +62,6 @@ export class FavoritesComponent implements OnInit {
         if (token) {
           this.userService.getFavorites(token).subscribe({
             next: (res: any) => {
-              console.log(res.data);
               this.favorites = res.data;
             },
           });
@@ -78,8 +77,6 @@ export class FavoritesComponent implements OnInit {
     }
     this.mainService.getCategories().subscribe({
       next: (res: any) => {
-        console.log(res.data);
-
         this.categories = res.data;
       },
     });
@@ -87,7 +84,6 @@ export class FavoritesComponent implements OnInit {
     if (token) {
       this.userService.getFavorites(token).subscribe({
         next: (res: any) => {
-          console.log(res.data);
           this.favorites = res.data;
         },
       });

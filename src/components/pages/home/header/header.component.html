@@ -5,7 +5,7 @@
     pagination-clickable="true"
     autoplay="true"
   >
-    @for (city of cities; track $index) {
+    @for (city of cities; track city.id) {
     <swiper-slide>
       <div class="w-full h-screen relative">
         <img

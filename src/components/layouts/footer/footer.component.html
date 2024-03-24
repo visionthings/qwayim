@@ -10,6 +10,19 @@
       </div>
     </div>
 
+    <div>
+      <h3 class="text-3xl mb-5">المدن</h3>
+
+      @for (city of cities; track city.id) {
+      <div>
+        <a
+          routerLink="/city/{{ city.slug }}/about/{{ city.slug }}"
+          class="mb-3 block"
+          >{{ city.name }}</a
+        >
+      </div>
+      }
+    </div>
     @for (item of items; track item.id) {
     <div>
       <h3 class="text-3xl mb-5">{{ item.title }}</h3>

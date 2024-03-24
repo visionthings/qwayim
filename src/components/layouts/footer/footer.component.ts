@@ -1,11 +1,12 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { MainService } from '../../../services/main.service';
 @Component({
   selector: 'app-footer',
   standalone: true,
@@ -13,7 +14,8 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
+  constructor(private mainService: MainService) {}
   socialMediaIcons = [
     { id: 1, icon: faFacebook, path: '' },
     { id: 2, icon: faTwitter, path: '' },
@@ -22,18 +24,6 @@ export class FooterComponent {
   ];
 
   items = [
-    {
-      id: 1,
-      title: 'المدن',
-      items: [
-        { id: 1, title: 'الرياض', path: '' },
-        { id: 2, title: 'جدة', path: '' },
-        { id: 3, title: 'مكة', path: '' },
-        { id: 4, title: 'الإسكندرية', path: '' },
-        { id: 5, title: 'القاهرة', path: '' },
-        { id: 6, title: 'اسطنبول', path: '' },
-      ],
-    },
     {
       id: 2,
       title: 'تواصل معنا',
@@ -53,4 +43,15 @@ export class FooterComponent {
       ],
     },
   ];
+
+  // Cities
+  cities: any = undefined;
+
+  ngOnInit(): void {
+    this.mainService.getAllCities().subscribe({
+      next: (res: any) => {
+        this.cities = res.data;
+      },
+    });
+  }
 }
