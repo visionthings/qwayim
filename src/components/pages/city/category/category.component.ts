@@ -291,12 +291,11 @@ export class CategoryComponent implements OnChanges, OnInit {
         next: (res: any) => {
           console.log(res);
 
-          if (res.status == 200) {
+          if (res.statusCode == 200) {
             this.errorMessage = null;
             let destinations = res.data.data;
 
             let handledDestinations = [];
-            this.destinations = [];
             for (const destination of destinations) {
               let fullRate = 0;
               let rate = 0;
