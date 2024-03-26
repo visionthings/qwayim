@@ -190,17 +190,26 @@
   <div class="flex flex-col justify-center items-center gap-5">
     @for (item of navItems; track item.id) { @if (item.id === 2) { @for (city of
     cities; track city.id) {
-    <a routerLink="/city/{{ city.slug.toLowerCase() }}"
-      >مدينة {{ city.name }}
+    <a
+      routerLink="/city/{{ city.slug.toLowerCase() }}/about/{{
+        city.slug.toLowerCase()
+      }}"
+    >
+      <div (click)="toggleSidebar()">مدينة {{ city.name }}</div>
     </a>
-    } } @else { <a [routerLink]="item.path">{{ item.title }} </a>
+    } } @else {
+    <a [routerLink]="item.path"
+      ><div (click)="toggleSidebar()">{{ item.title }}</div>
+    </a>
     } }
     <div *ngIf="!isAuthenticated" class="flex gap-5">
       @for (button of buttons; track button.id) {
       <a [routerLink]="button.path">
-        <button class="bg-white rounded-lg text-main px-5 py-1">
-          {{ button.title }}
-        </button></a
+        <div (click)="toggleSidebar()">
+          <button class="bg-white rounded-lg text-main px-5 py-1">
+            {{ button.title }}
+          </button>
+        </div></a
       >
       }
     </div>

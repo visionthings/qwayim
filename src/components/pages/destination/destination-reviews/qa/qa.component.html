@@ -1,6 +1,16 @@
 <section class="container">
-  @for (question of handledQuestions.slice(0, shownQuestionsNumber); track
-  question.id) {
+  @if(!handledQuestions || handledQuestions.length ==0){
+  <div
+    class="container py-5 mt-5 rounded-lg shadow ring-1 ring-slate-200 text-center"
+  >
+    <p>لا يوجد أسئلة.</p>
+  </div>
+  }
+
+  <!-- If questions exists -->
+  @if(handledQuestions && handledQuestions.length !== 0){ @for (question of
+  handledQuestions.reverse().slice(0, shownQuestionsNumber); track question.id)
+  {
   <!-- Question -->
   <div class="flex gap-3 py-5 border-b-2 border-b-black">
     <div style="min-width: 50px">
@@ -87,8 +97,7 @@
       إظهار المزيد من الأسئلة
     </p>
   </div>
-  }
-
+  } }
   <!-- Add Question -->
   @if (isAuthenticated) {
   <div class="mt-5 ring-1 ring-slate-200 shadow rounded-lg container py-5">

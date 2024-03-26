@@ -55,7 +55,7 @@
           <fa-icon [icon]="icons.star"></fa-icon>
           <p>10 / {{ dest.final_rate }}</p>
         </div>
-        <div class="flex gap-5">
+        <div class="flex flex-col md:flex-row gap-5">
           <div class="relative">
             <img
               [src]="dest.media[0].original_url"
@@ -80,15 +80,19 @@
             </div>
             } }
           </div>
-          <div style="height: 140px" class="overflow-hidden">
+          <div style="height: 100%" class="overflow-hidden">
             <a [routerLink]="['/destination/' + dest.id]">
               <p class="text-xl mb-3 text-main">{{ dest.name }}</p>
             </a>
+
             <p class="flex gap-2">
               <fa-icon [icon]="locationIcon" class="text-main"></fa-icon>
               {{ dest.address }}
             </p>
-            <p class="text-slate-500">{{ dest.description }}</p>
+
+            <div class="overflow-hidden" style="max-height: 25px">
+              <p class="text-slate-500">{{ dest.description }}</p>
+            </div>
             <div class="flex gap-3 text-sm">
               <!-- Comments -->
               <div class="flex gap-1">
@@ -99,7 +103,7 @@
               <!-- Views -->
               <div class="flex gap-1">
                 <fa-icon [icon]="icons.views" class="text-main"></fa-icon>
-                <p>{{ dest.view }} زيارة</p>
+                <p>{{ dest.view / 2 }} زيارة</p>
               </div>
             </div>
           </div>

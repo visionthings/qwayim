@@ -58,7 +58,7 @@ export class CommentsComponent implements OnInit {
     this.commentForm.markAllAsTouched();
     let data = {
       content: this.commentForm.controls.content.value,
-      rate: this.rate,
+      rate: this.rate + 1,
       place_id: this.destinationID,
     };
 
@@ -71,7 +71,7 @@ export class CommentsComponent implements OnInit {
           comment: comment.content,
           date: comment.created_at.slice(0, 10),
           time: comment.created_at.slice(11, 16),
-          rate: comment.rate,
+          rate: comment.rate - 1,
         };
 
         this.handledComments.unshift(commentData);

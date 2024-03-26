@@ -289,8 +289,37 @@ export class CategoryComponent implements OnChanges, OnInit {
       )
       .subscribe({
         next: (res: any) => {
-          this.destinations = res.data.data;
-          this.paginationInfo = res.data;
+          console.log(res);
+
+          if (res.status == 200) {
+            this.errorMessage = null;
+            let destinations = res.data.data;
+
+            let handledDestinations = [];
+            this.destinations = [];
+            for (const destination of destinations) {
+              let fullRate = 0;
+              let rate = 0;
+              for (let comment of destination.comments) {
+                rate += Number(comment.rate);
+                fullRate += 5;
+              }
+              if (fullRate !== 0) {
+                destination['final_rate'] = (
+                  ((rate / fullRate) * 100) /
+                  10
+                ).toFixed(1);
+              } else {
+                destination['final_rate'] = 0;
+              }
+              handledDestinations.push(destination);
+            }
+            this.destinations = handledDestinations;
+            this.paginationInfo = res.data;
+          } else {
+            this.destinations = null;
+            this.errorMessage = 'لا توجد بيانات.';
+          }
         },
       });
   }
@@ -324,8 +353,6 @@ export class CategoryComponent implements OnChanges, OnInit {
       next: () => {
         this.favoritesIDsComplete = false;
 
-        console.log('id:' + id, this.favoritesIDs);
-
         this.favoritesIDs = filteredFavoritesIDs;
         this.favoritesIDsComplete = true;
       },
@@ -348,7 +375,27 @@ export class CategoryComponent implements OnChanges, OnInit {
         next: (res: any) => {
           if (res.statusCode == 200) {
             this.errorMessage = null;
-            this.destinations = res.data.data;
+            let destinations = res.data.data;
+
+            let handledDestinations = [];
+            for (const destination of destinations) {
+              let fullRate = 0;
+              let rate = 0;
+              for (let comment of destination.comments) {
+                rate += Number(comment.rate);
+                fullRate += 5;
+              }
+              if (fullRate !== 0) {
+                destination['final_rate'] = (
+                  ((rate / fullRate) * 100) /
+                  10
+                ).toFixed(1);
+              } else {
+                destination['final_rate'] = 0;
+              }
+              handledDestinations.push(destination);
+            }
+            this.destinations = handledDestinations;
             this.paginationInfo = res.data;
           } else {
             this.destinations = null;
@@ -388,6 +435,7 @@ export class CategoryComponent implements OnChanges, OnInit {
                     if (res.statusCode == 200) {
                       this.errorMessage = null;
                       let destinations = res.data.data;
+
                       let handledDestinations = [];
                       for (const destination of destinations) {
                         let fullRate = 0;

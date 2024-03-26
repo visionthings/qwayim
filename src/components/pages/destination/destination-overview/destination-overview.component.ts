@@ -1,6 +1,4 @@
 import {
-  AfterContentInit,
-  AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
   Input,
@@ -22,18 +20,22 @@ import {
   faInstagram,
   faSnapchat,
 } from '@fortawesome/free-brands-svg-icons';
+import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { CategoryComponent } from '../../city/category/category.component';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../../../services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-destination-overview',
   standalone: true,
-  imports: [FontAwesomeModule, CategoryComponent, RouterLink],
+  imports: [FontAwesomeModule, CategoryComponent, RouterLink, CommonModule],
   templateUrl: './destination-overview.component.html',
   styleUrl: './destination-overview.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class DestinationOverviewComponent implements OnChanges {
+export class DestinationOverviewComponent implements OnChanges, OnInit {
+  constructor(private userService: UserService) {}
   @Input() destination: any = [];
 
   icons = {
@@ -47,12 +49,42 @@ export class DestinationOverviewComponent implements OnChanges {
     envelope: faEnvelope,
     heart: faHeart,
     map: faMap,
+    regularHeart: regularHeart,
   };
 
   contactItems: any = [];
   socialmedia: any = [];
+  favoritesIDs: any = [];
+  favoritesIDsComplete: boolean = false;
+
+  // Add and remove from favorites
+  addToFavorites(id: string) {
+    this.userService.addToFavorites(id).subscribe({
+      next: () => {
+        this.favoritesIDsComplete = false;
+        this.favoritesIDs.push(id);
+        this.favoritesIDsComplete = true;
+      },
+    });
+  }
+  removeFromFavorites(id: string) {
+    let filteredFavoritesIDs = this.favoritesIDs.filter((item: any) => {
+      return item != id;
+    });
+    this.userService.removeFromFavorites(id).subscribe({
+      next: () => {
+        this.favoritesIDsComplete = false;
+
+        console.log('id:' + id, this.favoritesIDs);
+
+        this.favoritesIDs = filteredFavoritesIDs;
+        this.favoritesIDsComplete = true;
+      },
+    });
+  }
 
   ngOnChanges(): void {
+    // Contact and social media items
     this.contactItems = [
       { id: 1, icon: this.icons.location, content: this.destination?.address },
       {
@@ -92,5 +124,28 @@ export class DestinationOverviewComponent implements OnChanges {
         url: this.destination?.contact.snapchat,
       },
     ];
+  }
+
+  ngOnInit(): void {
+    // Get user favorites
+    let token;
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('token');
+    }
+    if (token) {
+      this.userService.getFavorites(token).subscribe({
+        next: (res: any) => {
+          for (const item of res.data) {
+            this.favoritesIDs.push(item.place_id);
+          }
+        },
+        error: (e) => {
+          console.log(e);
+        },
+        complete: () => {
+          this.favoritesIDsComplete = true;
+        },
+      });
+    }
   }
 }

@@ -1,6 +1,16 @@
 <section class="bg-white rounded-b-lg">
-  @for (comment of handledComments.slice(0,shownCommentsNumber); track
-  comment.id) {
+  <!-- If no comments -->
+  @if(!handledComments || handledComments.length == 0){
+  <div
+    class="container py-5 mt-5 rounded-lg shadow ring-1 ring-slate-200 text-center"
+  >
+    <p>لا يوجد تعليقات.</p>
+  </div>
+  }
+
+  <!-- If comments exists -->
+  @if(handledComments && handledComments.length !== 0){ @for (comment of
+  handledComments.reverse().slice(0,shownCommentsNumber); track comment.id) {
   <div class="flex gap-5 mb-5 rounded-b-lg bg-white shadow container py-5">
     <div style="min-width: 50px">
       <img
@@ -34,7 +44,7 @@
       <p>اظهار المزيد من التعليقات</p>
     </div>
   </div>
-  }
+  }}
 
   <!-- Add Comment -->
   @if (isAuthenticated) {

@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { WeatherService } from '../../../../../services/weather.service';
 import { first } from 'rxjs';
 import { faWind } from '@fortawesome/free-solid-svg-icons';
@@ -50,7 +44,6 @@ export class CityAboutComponent implements OnChanges {
             this.temprature = res.current.temp_c;
             this.windKPH = res.current.wind_kph;
           },
-          error: (err: any) => {},
         });
     }
   }

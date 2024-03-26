@@ -4,9 +4,15 @@ import { NavbarComponent } from '../../../layouts/navbar/navbar.component';
 import { FooterComponent } from '../../../layouts/footer/footer.component';
 import { UserService } from '../../../../services/user.service';
 import { MainService } from '../../../../services/main.service';
-import { faLocation, faHeart } from '@fortawesome/free-solid-svg-icons';
+import {
+  faLocation,
+  faHeart,
+  faComment,
+  faEye,
+} from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-favorites',
@@ -16,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HeaderComponent,
     FooterComponent,
     FontAwesomeModule,
+    RouterLink,
   ],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.scss',
@@ -30,6 +37,8 @@ export class FavoritesComponent implements OnInit {
     location: faLocation,
     heart: faHeart,
     heartRegular: faHeartRegular,
+    comment: faComment,
+    views: faEye,
   };
 
   categories: any = [];
